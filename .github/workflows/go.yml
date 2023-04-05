@@ -43,8 +43,8 @@ jobs:
       - uses: actions/checkout@v2 
       - name: get private key from env 
         run: echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-      - name: SSH remote to EC2
-        run: ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME}
+      - name: check
+        run: ls -al
 
 
 
