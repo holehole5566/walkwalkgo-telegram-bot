@@ -41,6 +41,7 @@ jobs:
           export TOKEN=${{ secrets.TOKEN }}
           echo $TOKEN
           docker build --build-arg TOKEN="$TOKEN" -t telebot .
+          docker image prune -f
           docker run -d --name telebot telebot
           
 
