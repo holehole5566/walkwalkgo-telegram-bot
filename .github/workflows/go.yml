@@ -22,29 +22,21 @@ jobs:
           go-version: 1.16
       - name: Run tests
         run: go test ./...
-  build:
-    name: Go Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16
-      - name: Build
-        run: go build -o myapp ./cmd
 
   deploy:
     name: Deploy in AWS EC2
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2 
-      - name: get private key from env 
-        run: echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-      - name: check
-        run: ls -al
+    - name: executing remote ssh commands using key
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOSTNAME }}
+        username: ${{ secrets.USER_NAME }}
+        key: ${{ secrets.AWS_PRIVATE_KEY }}
+        script: |
+          whoami
+          ls -al
 
 
 
