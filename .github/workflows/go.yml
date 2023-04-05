@@ -35,8 +35,10 @@ jobs:
         username: ${{ secrets.USER_NAME }}
         key: ${{ secrets.AWS_PRIVATE_KEY }}
         script: |
-          whoami
+          cd /home/ubuntu/walkwalkgo/walkwalkgo-telegram-bot
+          git pull
           ls -al
+          
 
 
 
