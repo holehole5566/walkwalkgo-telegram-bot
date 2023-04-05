@@ -38,6 +38,10 @@ jobs:
           cd /home/ubuntu/walkwalkgo/walkwalkgo-telegram-bot
           git pull
           ls -al
+          export TOKEN=${{ secrets.TOKEN }}
+          echo $TOKEN
+          docker build --build-arg TOKEN="$TOKEN" -t telebot .
+          docker run -d --name telebot telebot
           
 
 
