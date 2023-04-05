@@ -13,10 +13,10 @@ var (
 )
 
 func init() {
-	// 創建一個 KeyboardButton
+
 	btn := tgbotapi.KeyboardButton{
 		RequestLocation: true,
-		Text:            "Gimme where u live!!",
+		Text:            "Arrived!",
 	}
 
 	row = tgbotapi.NewKeyboardButtonRow(btn)
@@ -27,7 +27,7 @@ func main() {
 
 	token := os.Getenv("TOKEN")
 	if token == "" {
-		log.Fatal("TOKEN must be set")
+		log.Fatal("Token must be set")
 	}
 
 	bot, err := tgbotapi.NewBotAPI(token)
@@ -49,9 +49,9 @@ func main() {
 
 			if update.Message.Location != nil {
 
-				log.Printf("收到位置：%f,%f", update.Message.Location.Latitude, update.Message.Location.Longitude)
+				log.Printf("Location：%f,%f", update.Message.Location.Latitude, update.Message.Location.Longitude)
 
-				reply := tgbotapi.NewMessage(update.Message.Chat.ID, "我已經收到你的位置了！")
+				reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Good job!")
 				if _, err := bot.Send(reply); err != nil {
 					log.Panic(err)
 				}
@@ -62,7 +62,7 @@ func main() {
 					msg.ReplyMarkup = keyboard
 					bot.Send(msg)
 				default:
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "please use keyboard button to send your location")
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Please use keyboard button to send your location.")
 					msg.ReplyMarkup = keyboard
 					bot.Send(msg)
 				}
