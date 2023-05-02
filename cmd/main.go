@@ -1,8 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
+	db "telebot/internal/access"
+	"telebot/internal/service"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
@@ -10,6 +14,7 @@ import (
 var (
 	row      []tgbotapi.KeyboardButton
 	keyboard tgbotapi.ReplyKeyboardMarkup
+	reply    tgbotapi.MessageConfig
 )
 
 func init() {
@@ -27,7 +32,7 @@ func main() {
 
 	token := os.Getenv("TOKEN")
 	if token == "" {
-		log.Fatal("Token must be set")
+		log.Fatal("TOKEN must be set")
 	}
 
 	bot, err := tgbotapi.NewBotAPI(token)
@@ -35,14 +40,31 @@ func main() {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	bot.Debug = false
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
+
+	mongoURI := os.Getenv("MONGO_URI")
+	if mongoURI == "" {
+		log.Fatal("MONGO_URI must be set")
+	}
+
+	client := db.GetClient(mongoURI)
+
+	defer func() {
+		if err = client.Disconnect(context.TODO()); err != nil {
+			panic(err)
+		}
+	}()
+
+	log.Printf("Pinged your deployment. You successfully connected to MongoDB!")
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
 	updates := bot.GetUpdatesChan(u)
+
+	log.Printf("Start to listen...")
 
 	for update := range updates {
 		if update.Message != nil {
@@ -51,7 +73,26 @@ func main() {
 
 				log.Printf("Location：%f,%f", update.Message.Location.Latitude, update.Message.Location.Longitude)
 
-				reply := tgbotapi.NewMessage(update.Message.Chat.ID, "Good job!")
+				fix := time.FixedZone("UTC+8", 3600*8)
+				tm := time.Unix(int64(update.Message.Date), 0)
+				localTime := tm.In(fix)
+				checkInResult := ""
+				result := service.CheckArrivedStatus(update.Message.Chat.ID, localTime, client, update.Message.Location.Latitude, update.Message.Location.Longitude)
+
+				switch result {
+				case 1:
+					checkInResult = "Check in Success. Good Job!"
+				case 2:
+					checkInResult = "You are not in a spot area."
+				case 3:
+					checkInResult = "You have already checked in this spot."
+				case 4:
+					checkInResult = "Something went wrong, please contact Peanutbutter."
+				default:
+					checkInResult = "Something went wrong, please try again."
+				}
+
+				reply = tgbotapi.NewMessage(update.Message.Chat.ID, checkInResult)
 				if _, err := bot.Send(reply); err != nil {
 					log.Panic(err)
 				}

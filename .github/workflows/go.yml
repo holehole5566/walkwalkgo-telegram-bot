@@ -39,8 +39,8 @@ jobs:
           git pull
           ls -al
           export TOKEN=${{ secrets.TOKEN }}
-          echo $TOKEN
-          docker build --build-arg TOKEN="$TOKEN" -t telebot .
+          export MONGO_URL=${{ secrets.MONGO_URL }}
+          docker build --build-arg TOKEN="$TOKEN" --build-arg MONGO_URL="$MONGO_URL" -t telebot .
           docker image prune -f
           docker run -d --name telebot telebot
           
