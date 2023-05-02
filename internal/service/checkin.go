@@ -38,7 +38,7 @@ func GetQuest(year int, week int, client *mongo.Client) model.Quest {
 
 	collection := client.Database("walkwalkgo").Collection("quest")
 	var results []model.Quest
-	filter := bson.D{{"week", week}, {"year", year}}
+	filter := bson.D{{Key: "week", Value: week}, {Key: "year", Value: year}}
 	cur, err := collection.Find(context.Background(), filter)
 	if err != nil {
 		log.Fatal(err)
@@ -54,7 +54,7 @@ func GetQuest(year int, week int, client *mongo.Client) model.Quest {
 func GetArrivals(user_ID int, year int, week int, client *mongo.Client) []model.Arrival {
 	collection := client.Database("walkwalkgo").Collection("arrival")
 	var results []model.Arrival
-	filter := bson.D{{"week", week}, {"year", year}, {"user_id", user_ID}}
+	filter := bson.D{{Key: "week", Value: week}, {Key: "year", Value: year}, {Key: "user_id", Value: user_ID}}
 	cur, err := collection.Find(context.Background(), filter)
 	if err != nil {
 		log.Fatal(err)
