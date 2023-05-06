@@ -40,7 +40,7 @@ jobs:
           ls -al
           export TOKEN=${{ secrets.TOKEN }}
           export MONGO_URI=${{ secrets.MONGO_URI }}
-          docker build --build-arg TOKEN="$TOKEN" --build-arg MONGO_URI="$MONGO_URI" -t telebot .
+          docker build -t --build-arg TOKEN="$TOKEN" --build-arg MONGO_URI="$MONGO_URI" --no-cache telebot .
           docker image prune -f
           docker run -d --name telebot telebot
           
