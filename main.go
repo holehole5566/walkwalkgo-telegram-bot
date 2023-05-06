@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
 	"os"
 	db "telebot/internal/access"
 	"telebot/internal/service"
@@ -30,13 +29,6 @@ func init() {
 }
 
 func main() {
-
-	go func() {
-		port := ":8080"
-		handler := http.FileServer(http.Dir("web"))
-		http.ListenAndServe(port, handler)
-
-	}()
 
 	token := os.Getenv("TOKEN")
 	if token == "" {
