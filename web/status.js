@@ -1,4 +1,4 @@
-url="http://35.78.191.196:80"
+url="http://54.248.150.241:80"
 
 async function renderStatus(id,username) {
     const root = document.getElementById("root");
