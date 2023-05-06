@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WalkWalkGo HomePage</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">WalkWalkGo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link active" id="status" href="#">Status</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="quest" href="#">Quest</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main role="main" class="container">
+        <div id="root" style="margin-top: 80px;">
+        </div>
+    </main>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="status.js"></script>
+    <script src="quest.js"></script>
+    <script>
+    /*
+    window.Telegram.WebApp.ready();
+    const User = {
+        id: window.Telegram.WebApp.initDataUnsafe.user.id || 0,
+        first_name: window.Telegram.WebApp.initDataUnsafe.user.first_name || '', 
+        last_name: window.Telegram.WebApp.initDataUnsafe.user.last_name || '', 
+        username: window.Telegram.WebApp.initDataUnsafe.user.username || ''
+    } 
+    */
+    window.onload = function() {
+        renderStatus(1120218288,"DonChen");
+    };
+    const statusButton = document.getElementById("status");
+    statusButton.addEventListener("click", function() {
+        renderStatus(1120218288,"DonChen");
+    });
+    const questButton = document.getElementById("quest");
+    questButton.addEventListener("click", function() {
+        renderQuest(1120218288);
+    });
+    </script>
+</body>
+</html>
