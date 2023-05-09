@@ -1,7 +1,6 @@
 package service
 
 import (
-	"log"
 	"os"
 	db "telebot/internal/access"
 	model "telebot/internal/model"
@@ -12,14 +11,14 @@ func TestGetQuest(t *testing.T) {
 	mongoURI := os.Getenv("MONGO_URI")
 	client := db.GetClient(mongoURI)
 	Quest := GetQuest(2023, 18, client)
-	log.Println(Quest)
+	t.Log(Quest)
 }
 
 func TestGetArrivals(t *testing.T) {
 	mongoURI := os.Getenv("MONGO_URI")
 	client := db.GetClient(mongoURI)
 	Arrivals := GetArrivals(1120218288, 2023, 18, client)
-	log.Println(Arrivals)
+	t.Log(Arrivals)
 }
 
 func TestCheckQuestArrival(t *testing.T) {
@@ -28,9 +27,9 @@ func TestCheckQuestArrival(t *testing.T) {
 	Quest := GetQuest(2023, 18, client)
 	spot := CheckQuestArrival(25.0339639, 121.5644722, Quest)
 	if spot.Name == "" {
-		log.Println("Not in the quest area")
+		t.Log("Not in the quest area")
 	}
-	log.Println(spot)
+	t.Log(spot)
 
 }
 
@@ -41,7 +40,7 @@ func TestAlreadyArrived(t *testing.T) {
 	spot := CheckQuestArrival(25.0339639, 121.5644722, Quest)
 	Arrivals := GetArrivals(1120218288, 2023, 18, client)
 	isAlreadyArrived := CheckAlreadyArrived(spot, Arrivals)
-	log.Println(isAlreadyArrived)
+	t.Log(isAlreadyArrived)
 }
 
 func TestInsertArrival(t *testing.T) {
@@ -55,8 +54,8 @@ func TestInsertArrival(t *testing.T) {
 	}
 	_, err := InsertArrival(int(1120218288), 2023, 18, spot, client)
 	if err != nil {
-		log.Println(err)
+		t.Log(err)
 	} else {
-		log.Println("insert success")
+		t.Log("insert success")
 	}
 }

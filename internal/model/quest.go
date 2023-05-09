@@ -19,4 +19,5 @@ type Spot struct {
 	Type      int     `bson:"type"`
 	Latitude  float64 `bson:"latitude"`
 	Longitude float64 `bson:"longitude"`
+	Finished  bool    `bson:"finished"`
 }

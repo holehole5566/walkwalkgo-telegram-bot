@@ -12,9 +12,10 @@ import (
 )
 
 var (
-	row      []tgbotapi.KeyboardButton
-	keyboard tgbotapi.ReplyKeyboardMarkup
-	reply    tgbotapi.MessageConfig
+	row       []tgbotapi.KeyboardButton
+	keyboard  tgbotapi.ReplyKeyboardMarkup
+	reply     tgbotapi.MessageConfig
+	keyboard2 tgbotapi.ReplyKeyboardMarkup
 )
 
 func init() {
@@ -26,6 +27,17 @@ func init() {
 
 	row = tgbotapi.NewKeyboardButtonRow(btn)
 	keyboard = tgbotapi.NewReplyKeyboard(row)
+
+	keyboard2 = tgbotapi.NewReplyKeyboard(
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("/checkin"),
+			tgbotapi.NewKeyboardButton("/profile"),
+			tgbotapi.NewKeyboardButton("/quests"),
+		),
+		tgbotapi.NewKeyboardButtonRow(
+			tgbotapi.NewKeyboardButton("/achievements"),
+		),
+	)
 }
 
 func main() {
@@ -100,11 +112,26 @@ func main() {
 				switch update.Message.Text {
 				case "/start":
 					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hello, welcome to WalkWalk Go.")
+					msg.ReplyMarkup = keyboard2
+					bot.Send(msg)
+				case "/checkin":
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hello, welcome to WalkWalk Go.")
 					msg.ReplyMarkup = keyboard
+				case "/profile":
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+					msg.ParseMode = tgbotapi.ModeHTML
+					bot.Send(msg)
+				case "/quests":
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+					msg.ParseMode = tgbotapi.ModeHTML
+					bot.Send(msg)
+				case "/achievements":
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+					msg.ParseMode = tgbotapi.ModeHTML
 					bot.Send(msg)
 				default:
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Please use keyboard button to send your location.")
-					msg.ReplyMarkup = keyboard
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Select the button below.")
+					msg.ReplyMarkup = keyboard2
 					bot.Send(msg)
 				}
 			}
