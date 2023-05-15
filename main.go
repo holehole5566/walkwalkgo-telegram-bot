@@ -81,13 +81,14 @@ func main() {
 	for update := range updates {
 		if update.Message != nil {
 
+			fix := time.FixedZone("UTC+8", 3600*8)
+			tm := time.Unix(int64(update.Message.Date), 0)
+			localTime := tm.In(fix)
+
 			if update.Message.Location != nil {
 
 				log.Printf("Location：%f,%f", update.Message.Location.Latitude, update.Message.Location.Longitude)
 
-				fix := time.FixedZone("UTC+8", 3600*8)
-				tm := time.Unix(int64(update.Message.Date), 0)
-				localTime := tm.In(fix)
 				checkInResult := ""
 				result := service.CheckArrivedStatus(update.Message.Chat.ID, localTime, client, update.Message.Location.Latitude, update.Message.Location.Longitude)
 
@@ -117,12 +118,14 @@ func main() {
 				case "/checkin":
 					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hello, welcome to WalkWalk Go.")
 					msg.ReplyMarkup = keyboard
+					bot.Send(msg)
 				case "/profile":
 					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 					msg.ParseMode = tgbotapi.ModeHTML
 					bot.Send(msg)
 				case "/quests":
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+					result := service.GetQuestResult(update.Message.Chat.ID, localTime, client)
+					msg := tgbotapi.NewMessage(update.Message.Chat.ID, result)
 					msg.ParseMode = tgbotapi.ModeHTML
 					bot.Send(msg)
 				case "/achievements":
